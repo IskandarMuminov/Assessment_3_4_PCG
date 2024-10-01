@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "ProceduralMeshComponent.h"
 #include "ProceduralRoom.generated.h"
 
 UCLASS()
@@ -28,9 +29,23 @@ public:
 private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
-	UStaticMeshComponent* Floor;
-	
+	UProceduralMeshComponent* Floor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
 	TSubclassOf<AActor> ChestClass;
 
+	void SpawnObject(UClass* ItemToSpawn);
+
+	float SquareWidth;
+	float GridHeight;
+
+	float RoomWidth;
+	float RoomLength;
+	
+	FVector TopLeft;
+	FVector BottomRight;
+	
+	int32 GridSizeX;
+	int32 GridSizeY;
+
+	void CreateGrid();
 };
