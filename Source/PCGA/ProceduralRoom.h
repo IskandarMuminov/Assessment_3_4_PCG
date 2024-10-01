@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ProceduralMeshComponent.h"
 #include "ProceduralRoom.generated.h"
 
 UCLASS()
@@ -25,34 +24,13 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual bool ShouldTickIfViewportsOnly() const override;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Properties")
-	int32 RoomWidth = 10;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Properties")
-	int32 RoomHeight = 10;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room Properties")
-	float TileSize = 100.0f;
-
-	UPROPERTY(EditAnywhere)
-	bool bShouldRegenerate;
-	
-	UFUNCTION(BlueprintCallable, Category = "Generation")
-	void GenerateRoom();
-
-	UFUNCTION(BlueprintCallable, Category = "Generation")
-	void ClearRoom();
-
-	void DrawDebugLineBetweenVertices(int32 X, int32 Y) const;
 
 private:
 	
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UProceduralMeshComponent* ProceduralMesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
+	UStaticMeshComponent* Floor;
 	
-	TArray<FVector> Vertices;
-	TArray<int32> Triangles;
-	TArray<FVector2D> UVCoords;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
+	TSubclassOf<AActor> ChestClass;
 
 };
