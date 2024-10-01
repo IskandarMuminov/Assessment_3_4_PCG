@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Cell.h"
 #include "GameFramework/Actor.h"
 #include "ProceduralMeshComponent.h"
 #include "ProceduralRoom.generated.h"
@@ -47,7 +46,6 @@ public:
 
 	void DrawDebugLineBetweenVertices(int32 X, int32 Y) const;
 
-	void AddTile(const Cell& InCell);
 private:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
@@ -57,5 +55,4 @@ private:
 	TArray<int32> Triangles;
 	TArray<FVector2D> UVCoords;
 
-	CellSideTag DetermineCellSide(int32 X, int32 Y) const;
 };
