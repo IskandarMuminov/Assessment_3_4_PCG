@@ -14,16 +14,12 @@ AProceduralRoom::AProceduralRoom()
     TopLeft = FVector(0.f);
     BottomRight = FVector(1000.f, 1000.f , 0.f );
     GridHeight = 1.f;
-
-    RoomLength= 1000.f;
-    RoomWidth = 1000.f;
+    ChestRadius = 100.f;
 }
 
 void AProceduralRoom::BeginPlay()
 {
     Super::BeginPlay();
-    SpawnObject(ChestClass);
-    PlacePointOnGrid();
 }
 
 void AProceduralRoom::Tick(float DeltaTime)
@@ -34,7 +30,8 @@ void AProceduralRoom::Tick(float DeltaTime)
     {
         ClearGrid();
         CreateGrid();
-        
+        ClearObjects();
+        PlacePointOnGrid();
         bShouldRegenerate = false;
     }
 }
@@ -55,6 +52,20 @@ void AProceduralRoom::SpawnObject(UClass* ItemToSpawn)
     FRotator Rotation (0.f,Yaw,0.f);
     GetWorld()->SpawnActor<AActor>(ItemToSpawn, Location, Rotation);
 }
+
+void AProceduralRoom::ClearObjects()
+{
+    for (AActor* SpawnedObject : SpawnedObjects)
+    {
+        if (SpawnedObject)
+        {
+            SpawnedObject->Destroy(); 
+        }
+    }
+    SpawnedObjects.Empty();
+}
+
+
 
 void AProceduralRoom::CreateGrid()
 {
@@ -118,15 +129,45 @@ FVector AProceduralRoom::GetRandomPointInSquare(const FVector& UpperLeft, const 
 
 void AProceduralRoom::PlacePointOnGrid()
 {
-    for(int32 i =0; i<GridSizeX; i++)
+    for(int32 i =0; i<GridSizeX - 1; i++)
     {
-        for(int32 j = 0; i<GridSizeY; j++)
+        for(int32 j = 0; j<GridSizeY - 1; j++)
         {
-            FVector UpperLeft(i*VertexSpacing, j *VertexSpacing, GridHeight);
-            FVector LowerRight(i*VertexSpacing + VertexSpacing, j *VertexSpacing, GridHeight);
+            FVector UpperLeft(i * VertexSpacing + ChestRadius, j * VertexSpacing + ChestRadius, GridHeight);
+            FVector LowerRight((i* VertexSpacing + VertexSpacing)- ChestRadius,
+                (j* VertexSpacing + VertexSpacing) - ChestRadius, GridHeight);
 
             FVector RandomPointInSquare = GetRandomPointInSquare(UpperLeft,LowerRight);
-            DrawDebugPoint(GetWorld(),RandomPointInSquare, 5.f, FColor::Red, true);
+
+            float BarrelSpawnOffsetX = FMath::RandRange(100.f, 300.f);
+            float BrazierSpawnOffsetX= FMath::RandRange(300.f, 400.f);
+            float BarrelSpawnOffsetY= FMath::RandRange(100.f, 300.f);
+            float BrazierSpawnOffsetY= FMath::RandRange(300.f, 400.f);
+            
+            FVector BarrelPosition = RandomPointInSquare + FVector(BarrelRadius + BarrelSpawnOffsetX, BarrelSpawnOffsetY, 0.f);  
+            FVector BrazierPosition = RandomPointInSquare + FVector(-(BrazierRadius + BrazierSpawnOffsetX),BrazierSpawnOffsetY, 0.f);
+            
+            float RandomYaw = FMath::FRandRange(0.f,360.f);
+            
+            AActor* SpawnedChest = GetWorld()->SpawnActor<AActor>(ChestClass, RandomPointInSquare, FRotator(0.f, RandomYaw, 0.f));
+            if (SpawnedChest)
+            {
+                SpawnedObjects.Add(SpawnedChest); // Add spawned chest to the list
+            }
+
+            // Spawn barrel at the calculated barrel position
+            AActor* SpawnedBarrel = GetWorld()->SpawnActor<AActor>(BarrelClass, BarrelPosition, FRotator(0.f, RandomYaw, 0.f));
+            if (SpawnedBarrel)
+            {
+                SpawnedObjects.Add(SpawnedBarrel); // Add spawned barrel to the list
+            }
+
+            // Spawn brazier at the calculated brazier position
+            AActor* SpawnedBrazier = GetWorld()->SpawnActor<AActor>(BrazierClass, BrazierPosition, FRotator(0.f, RandomYaw, 0.f));
+            if (SpawnedBrazier)
+            {
+                SpawnedObjects.Add(SpawnedBrazier); // Add spawned brazier to the list
+            }
         }
     }
 }

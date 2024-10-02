@@ -26,10 +26,18 @@ protected:
 	TArray<int32> Triangles;
 	UPROPERTY()
 	TArray<FVector2D> UVCoords;
+	UPROPERTY()
+	TArray<AActor*> SpawnedObjects;
 
 	UPROPERTY(EditAnywhere)
 	bool bShouldRegenerate;
-
+	
+	UPROPERTY(EditAnywhere, Category="Spawned Object")
+	float ChestRadius;
+	UPROPERTY(EditAnywhere, Category="Spawned Object")
+	float BarrelRadius;
+	UPROPERTY(EditAnywhere, Category="Spawned Object")
+	float BrazierRadius;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -41,15 +49,15 @@ private:
 	UProceduralMeshComponent* Floor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
 	TSubclassOf<AActor> ChestClass;
-
-	void SpawnObject(UClass* ItemToSpawn);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
+	TSubclassOf<AActor> BarrelClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
+	TSubclassOf<AActor> BrazierClass;
 
 	
+
 	float GridHeight;
 
-	float RoomWidth;
-	float RoomLength;
-	
 	FVector TopLeft;
 	FVector BottomRight;
 	
@@ -60,6 +68,8 @@ private:
 	UPROPERTY(EditAnywhere, Category="GridSize")
 	float VertexSpacing;
 
+	void SpawnObject(UClass* ItemToSpawn);
+	void ClearObjects();
 	void CreateGrid();
 	void ClearGrid();
 
