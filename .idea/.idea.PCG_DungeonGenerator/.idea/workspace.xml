@@ -9,6 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ac62c375-38a5-474a-a4d7-3215f51cd161" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PCG_DungeonGenerator/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PCG_DungeonGenerator/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/E/ZE/G8WK3FLFTZD1ZWJ1NCDMZJ.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/E/ZE/G8WK3FLFTZD1ZWJ1NCDMZJ.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/PCG_DungeonGenerator/Dungeon_Generator.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/PCG_DungeonGenerator/Dungeon_Generator.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -204,7 +205,7 @@
       <option name="presentableId" value="Default" />
       <updated>1728461287926</updated>
       <workItem from="1728461289569" duration="22289000" />
-      <workItem from="1728571436166" duration="1019000" />
+      <workItem from="1728571436166" duration="1588000" />
     </task>
     <servers />
   </component>

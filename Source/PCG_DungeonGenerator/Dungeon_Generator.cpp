@@ -43,7 +43,7 @@ void ADungeon_Generator::BeginPlay()
 
 	if (GEngine)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Simple log message."));
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Green, TEXT("Simple log message."));
 	}
 }
 
