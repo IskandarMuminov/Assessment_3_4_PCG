@@ -109,7 +109,7 @@ void APCGACharacter::Interact(const FInputActionValue& Value)
 	// Set the start and end points for the line trace (from the player's camera forward)
 	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
 	FVector ForwardVector = GetFirstPersonCameraComponent()->GetForwardVector();
-	FVector End = Start + (ForwardVector * 500.0f); // Line trace length of 500 units
+	FVector End = Start + (ForwardVector * 250.0f); // Line trace length of 500 units
 
 	// Setup query parameters
 	FCollisionQueryParams TraceParams(FName(TEXT("InteractTrace")), true, this);
@@ -130,21 +130,41 @@ void APCGACharacter::Interact(const FInputActionValue& Value)
 	if (HitResult.GetActor())
 	{
 		// Check if the hit actor is a chest
-
 		if (AChest* Chest = Cast<AChest>(HitResult.GetActor()))
 		{
 			// Call the OnInteract function in the Chest class
 			Chest->OnInteract();
 			UE_LOG(LogTemp, Warning, TEXT("Interacted with chest: %s"), *Chest->GetName());
+			
+			// Show message on screen
+			if (GEngine)
+			{
+				FString Message = FString::Printf(TEXT("Interacted with chest: %s"), *Chest->GetName());
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, Message);
+			}
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("No chest found, hit: %s"), *HitResult.GetActor()->GetName());
+			FString Message = FString::Printf(TEXT("No chest found, hit: %s"), *HitResult.GetActor()->GetName());
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *Message);
+			
+			// Show message on screen
+			if (GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Message);
+			}
 		}
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Nothing to interact with"));
+		FString Message = TEXT("Nothing to interact with");
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *Message);
+		
+		// Show message on screen
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, Message);
+		}
 	}
 }
 
