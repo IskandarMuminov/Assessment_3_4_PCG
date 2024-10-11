@@ -13,5 +13,16 @@ UCLASS()
 class PCGA_API UTestWorldSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
+
+public:
+
+	UFUNCTION(BlueprintCallable)
+	void CallThisInBP();
+
+	UPROPERTY(BluePrintReadWrite)
+	int32 IntRef = 2;
+
+protected:
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	
 };
