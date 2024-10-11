@@ -18,10 +18,23 @@ void AMasterRoom::BeginPlay()
 	
 }
 
+TArray<USceneComponent*> AMasterRoom::GetExits() const
+{
+	// Implement logic to return the exit points in the room
+	TArray<USceneComponent*> Exits;
+	return Exits;
+}
+
+TArray<UPrimitiveComponent*> AMasterRoom::GetOverlappedComponents() const
+{
+	// Implement logic to return components that are overlapped
+	TArray<UPrimitiveComponent*> OverlappedComponents;
+	return OverlappedComponents;
+}
+
 // Called every frame
 void AMasterRoom::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
-
