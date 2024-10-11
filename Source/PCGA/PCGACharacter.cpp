@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "PCGACharacter.h"
+
+#include "Chest.h"
 #include "PCGAProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
@@ -69,6 +71,9 @@ void APCGACharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInpu
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APCGACharacter::Look);
+
+		//Interacting
+		EnhancedInputComponent->BindAction(InteractionAction, ETriggerEvent::Triggered, this, &APCGACharacter::Interact);
 	}
 }
 
@@ -96,6 +101,50 @@ void APCGACharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void APCGACharacter::Interact(const FInputActionValue& Value)
+{
+	// Set the start and end points for the line trace (from the player's camera forward)
+	FVector Start = GetFirstPersonCameraComponent()->GetComponentLocation();
+	FVector ForwardVector = GetFirstPersonCameraComponent()->GetForwardVector();
+	FVector End = Start + (ForwardVector * 500.0f); // Line trace length of 500 units
+
+	// Setup query parameters
+	FCollisionQueryParams TraceParams(FName(TEXT("InteractTrace")), true, this);
+	TraceParams.bReturnPhysicalMaterial = false;
+	TraceParams.bTraceComplex = true;
+
+	// Perform line trace (raycast)
+	FHitResult HitResult;
+	GetWorld()->LineTraceSingleByChannel(
+		HitResult,
+		Start,
+		End,
+		ECC_Visibility,  // We use the visibility channel for this trace
+		TraceParams
+	);
+
+	// Check if we hit something
+	if (HitResult.GetActor())
+	{
+		// Check if the hit actor is a chest
+
+		if (AChest* Chest = Cast<AChest>(HitResult.GetActor()))
+		{
+			// Call the OnInteract function in the Chest class
+			Chest->OnInteract();
+			UE_LOG(LogTemp, Warning, TEXT("Interacted with chest: %s"), *Chest->GetName());
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No chest found, hit: %s"), *HitResult.GetActor()->GetName());
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Nothing to interact with"));
 	}
 }
 

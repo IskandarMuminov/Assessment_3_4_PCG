@@ -24,8 +24,7 @@ protected:
 	
 	TSubclassOf<AActor> WeaponClass;
 
-	// Function to handle interaction (spawn and throw weapon)
-	void OnInteract();
+	
 
 	// Function to throw the spawned weapon
 	void ThrowWeapon(AActor* SpawnedWeapon);
@@ -33,6 +32,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	// Function to handle interaction (spawn and throw weapon)
+	void OnInteract();
 
 	void ResetInteraction();
 	// Function to detect key press and trigger interaction
