@@ -23,36 +23,28 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	
 	TSubclassOf<AActor> WeaponClass;
-
 	
-
-	// Function to throw the spawned weapon
 	void ThrowWeapon(AActor* SpawnedWeapon);
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
-	// Function to handle interaction (spawn and throw weapon)
 	void OnInteract();
 
 	void ResetInteraction();
-	// Function to detect key press and trigger interaction
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
-	// Scene component to act as root
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	USceneComponent* RootScene;
-
-	// Static mesh component to represent the chest
+	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent* ChestMesh;
-
-	// Point where the weapon will spawn
+	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	USceneComponent* SpawnPoint;
-
-	// Delay between key presses (prevent rapid spamming)
+	
 	UPROPERTY(EditAnywhere, Category = "Interaction")
 	float InteractionCooldown;
 
