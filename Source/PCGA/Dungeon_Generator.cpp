@@ -6,7 +6,7 @@
 #include "Components/SceneComponent.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
-#include "Door.h" 
+//#include "Door.h" 
 
 // Sets default values
 ADungeon_Generator::ADungeon_Generator()
@@ -24,7 +24,7 @@ ADungeon_Generator::ADungeon_Generator()
 	MaxDungeonTime = 60.0;
 	Seed = -1;
 
-	SpawnDoorsAtExits();
+	//SpawnDoorsAtExits();
 
 }
 
@@ -164,32 +164,6 @@ void ADungeon_Generator::CheckForOverlaps()
 		//}
 	//}
 //}
-
-void ADungeon_Generator::SpawnDoorsAtExits()
-{
-	if (DoorClass && LatestRoom)
-	{
-		for (USceneComponent* ExitComponent : LatestRoom->GetExits())
-		{
-			if (ExitComponent)
-			{
-				FTransform SpawnTransform = ExitComponent->GetComponentTransform();
-				FActorSpawnParameters SpawnParams;
-				SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-				// Spawn the door
-			//	ADoor* SpawnedDoor = GetWorld()->SpawnActor<ADoor>(DoorClass, SpawnTransform, SpawnParams);
-
-				// Optionally log the spawn position for debugging
-				UE_LOG(LogTemp, Warning, TEXT("Spawned door at: %s"), *SpawnTransform.GetLocation().ToString());
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("ExitComponent is null!"));
-			}
-		}
-	}
-}
 
 // Called every frame
 void ADungeon_Generator::Tick(float DeltaTime)

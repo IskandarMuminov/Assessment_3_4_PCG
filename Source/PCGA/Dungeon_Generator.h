@@ -7,7 +7,7 @@
 #include "Dungeon_Generator.generated.h"
 
 class AMasterRoom;
-class ADoor;
+//class ADoor;
 
 UCLASS()
 class PCGA_API ADungeon_Generator : public AActor
@@ -28,7 +28,7 @@ protected:
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
-	void SpawnDoorsAtExits();
+	//void SpawnDoorsAtExits();
 
 	
 public:	
@@ -107,8 +107,8 @@ public:
 	//UFUNCTION(BlueprintCallable, Category = "Dungeon")
 	//void SpawnDoorsAtExits();
 	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Default")
-	TSubclassOf<ADoor> DoorClass;
+	//UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Default")
+	//TSubclassOf<ADoor> DoorClass;
 
 
 private:
