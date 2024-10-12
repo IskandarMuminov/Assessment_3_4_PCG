@@ -104,13 +104,6 @@ public:
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Default")
     FRandomStream Stream;
 
-	//UFUNCTION(BlueprintCallable, Category = "Dungeon")
-	//void SpawnDoorsAtExits();
-	
-	//UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Default")
-	//TSubclassOf<ADoor> DoorClass;
-
-
 private:
 	bool DungeonComplete;
 
