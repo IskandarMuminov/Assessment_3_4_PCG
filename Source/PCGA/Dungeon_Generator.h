@@ -17,6 +17,21 @@ public:
 	// Sets default values for this actor's properties
 	ADungeon_Generator();
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dungeon")
+	TSubclassOf<AActor> DungeonRoom1Class;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dungeon")
+	TSubclassOf<AActor> DungeonRoom2Class;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dungeon")
+	TSubclassOf<AActor> DungeonRoom3Class;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dungeon")
+	TSubclassOf<AActor> DungeonRoom4Class;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dungeon")
+	TSubclassOf<AActor> DungeonRoom5Class;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -26,8 +41,6 @@ protected:
 	void CheckForOverlaps();
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
-	//void SpawnDoorsAtExits();
 
 	
 public:	

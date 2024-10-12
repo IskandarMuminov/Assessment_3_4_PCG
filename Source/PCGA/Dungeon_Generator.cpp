@@ -6,7 +6,7 @@
 #include "Components/SceneComponent.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
-//#include "Door.h" 
+#include "UObject/ConstructorHelpers.h" 
 
 // Sets default values
 ADungeon_Generator::ADungeon_Generator()
@@ -24,7 +24,35 @@ ADungeon_Generator::ADungeon_Generator()
 	MaxDungeonTime = 60.0;
 	Seed = -1;
 
-	//SpawnDoorsAtExits();
+	static ConstructorHelpers::FClassFinder<AMasterRoom> Room1(TEXT("/Game/Path/To/Dungeon_Room_1"));
+	if (Room1.Succeeded())
+	{
+		RoomList.Add(Room1.Class);
+	}
+
+	static ConstructorHelpers::FClassFinder<AMasterRoom> Room2(TEXT("/Game/Path/To/Dungeon_Room_2"));
+	if (Room2.Succeeded())
+	{
+		RoomList.Add(Room2.Class);
+	}
+
+	static ConstructorHelpers::FClassFinder<AMasterRoom> Room3(TEXT("/Game/Path/To/Dungeon_Room_3"));
+	if (Room3.Succeeded())
+	{
+		RoomList.Add(Room3.Class);
+	}
+
+	static ConstructorHelpers::FClassFinder<AMasterRoom> Room4(TEXT("/Game/Path/To/Dungeon_Room_4"));
+	if (Room4.Succeeded())
+	{
+		RoomList.Add(Room4.Class);
+	}
+
+	static ConstructorHelpers::FClassFinder<AMasterRoom> Room5(TEXT("/Game/Path/To/Dungeon_Room_5"));
+	if (Room5.Succeeded())
+	{
+		RoomList.Add(Room5.Class);
+	}
 
 }
 
@@ -92,7 +120,7 @@ void ADungeon_Generator::GenerateDungeon()
 void ADungeon_Generator::CheckForOverlaps()
 {
 	// Assuming LatestRoom has a function to get overlapped components
-	//OverlappedList = LatestRoom->GetOverlappedComponents();
+	OverlappedList = LatestRoom->GetOverlappedComponents();
 
 	if (LatestRoom)
 	{
