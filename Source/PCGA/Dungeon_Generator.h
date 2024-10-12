@@ -7,7 +7,6 @@
 #include "Dungeon_Generator.generated.h"
 
 class AMasterRoom;
-//class ADoor;
 
 UCLASS()
 class PCGA_API ADungeon_Generator : public AActor
