@@ -81,13 +81,13 @@ void AProceduralRoom::CreateGrid()
             UVCoords.Add(FVector2D(X,Y));
             //DrawDebugSphere(GetWorld(), VertexLocation, 10.0f, 3, FColor::Blue, true, -1, 0, 5.0f);
             
-            //Draw the line on X axis
+            //Draw a line on X axis
             if (X < GridSizeX - 1)
             {
                 FVector NextInRow = FVector((X + 1) * VertexSpacing, Y * VertexSpacing, 0.f);
                 //DrawDebugLine(GetWorld(), VertexLocation, NextInRow, FColor::Green, true, -1, 0, 5.0f);
             }
-            //Draw the line on Y axis
+            //Draw a line on Y axis
             if (Y < GridSizeY - 1)
             {
                 FVector NextInColumn = FVector(X * VertexSpacing, (Y + 1) * VertexSpacing, 0.f);
