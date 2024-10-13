@@ -60,8 +60,6 @@ public:
     TObjectPtr<USceneComponent> SelectedExitPoint;
 
     /** List of possible room types that can be spawned in the dungeon */
-    //UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Default")
-    //TArray<UClass*> RoomList;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Default")
 	TArray<UClass*> RoomList;
 

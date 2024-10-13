@@ -45,7 +45,4 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Room")
 	void AddExit(USceneComponent* ExitPoint);
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room")
-	//TArray<USceneComponent*> ExitPoints;
-
 };

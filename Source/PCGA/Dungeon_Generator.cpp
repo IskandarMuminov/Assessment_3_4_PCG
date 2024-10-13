@@ -11,14 +11,13 @@
 // Sets default values
 ADungeon_Generator::ADungeon_Generator()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Set the root component of the actor
 	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
 	RootComponent = DefaultSceneRoot;
 
-	// Initialize default values
+	// Initialise default values
 	RoomAmount = 30;
 	DungeonComplete = false;
 	MaxDungeonTime = 60.0;
@@ -61,18 +60,15 @@ void ADungeon_Generator::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Initialize the random stream using the seed
 	Stream.Initialize(Seed);
 
 	GenerateDungeon();
 	
-	// Start the dungeon generation process
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADungeon_Generator::GenerateDungeon, 1.0f, true);
 }
 
 void ADungeon_Generator::GenerateDungeon()
 {
-	// Check if the dungeon is already complete
 	if (DungeonComplete || RoomAmount <= 0)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
@@ -103,14 +99,12 @@ void ADungeon_Generator::GenerateDungeon()
 				RoomAmount--;
 
 				// Update ExitsList and set a new SelectedExitPoint
-				ExitsList = LatestRoom->GetExits(); // Assuming `GetExits()` returns an array of exits
+				ExitsList = LatestRoom->GetExits();
 				if (ExitsList.Num() > 0)
 				{
 					int32 ExitIndex = Stream.RandRange(0, ExitsList.Num() - 1);
 					SelectedExitPoint = ExitsList[ExitIndex];
 				}
-
-				// Optionally handle overlaps
 				CheckForOverlaps();
 			}
 		}
@@ -119,7 +113,6 @@ void ADungeon_Generator::GenerateDungeon()
 
 void ADungeon_Generator::CheckForOverlaps()
 {
-	// Assuming LatestRoom has a function to get overlapped components
 	OverlappedList = LatestRoom->GetOverlappedComponents();
 
 	if (LatestRoom)
@@ -134,8 +127,6 @@ void ADungeon_Generator::CheckForOverlaps()
 			{
 				if (OverlappedComponent)
 				{
-					// Here you can handle what happens during an overlap.
-					// For example, you could log the overlap or destroy the room.
 					UE_LOG(LogTemp, Warning, TEXT("Overlap detected with: %s"), *OverlappedComponent->GetName());
 
 					// Destroy the latest room if overlapping too much

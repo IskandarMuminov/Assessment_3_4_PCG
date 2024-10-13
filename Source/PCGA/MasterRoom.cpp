@@ -9,7 +9,6 @@
 // Sets default values
 AMasterRoom::AMasterRoom()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	RoomMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("RoomMesh"));
@@ -32,9 +31,6 @@ void AMasterRoom::BeginPlay()
 
 TArray<USceneComponent*> AMasterRoom::GetExits() const
 {
-	// Implement logic to return the exit points in the room
-	//TArray<USceneComponent*> Exits;
-	//return Exits;
 	return ExitPoints;
 }
 
@@ -42,11 +38,6 @@ TArray<UPrimitiveComponent*> AMasterRoom::GetOverlappedComponents() const
 {
 	// Implement logic to return components that are overlapped
 	TArray<UPrimitiveComponent*> OverlappedComponents;
-
-	// Assuming you have some way to check for overlaps
-	// You might use a specific collision channel or overlap detection mechanism
-	//TArray<AActor*> OverlappingActors;
-	//RoomMesh->GetOverlappingActors(OverlappingActors);
 
 	TArray<UActorComponent*> Components;
 	RoomMesh->GetOverlappingComponents(OverlappedComponents);
