@@ -22,7 +22,7 @@ AChest::AChest()
 	SpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("SpawnPoint"));
 	SpawnPoint->SetupAttachment(RootScene);
 	
-	//Cooldown
+	//Cooldown for weapon spawn
 	InteractionCooldown = 5.0f; 
 	bCanInteract = true;
 }
@@ -65,7 +65,7 @@ void AChest::OnInteract()
 		SpawnParams.Instigator = GetInstigator();
 		FTransform SpawnTransform = SpawnPoint->GetComponentTransform();
 
-		// Spawn the weapon
+		//Spawn the weapon
 		if (AActor* SpawnedWeapon = GetWorld()->SpawnActor<AActor>(WeaponClass, SpawnTransform, SpawnParams))
 		{
 			ThrowWeapon(SpawnedWeapon);
@@ -75,12 +75,12 @@ void AChest::OnInteract()
 
 void AChest::ThrowWeapon(AActor* SpawnedWeapon)
 {
-	// apply an impulse or force to the weapon to simulate a "throw"
+	//Apply an impulse or force to the weapon to simulate a "throw"
 	UStaticMeshComponent* WeaponMesh = SpawnedWeapon->FindComponentByClass<UStaticMeshComponent>();
 	if (WeaponMesh)
 	{
-		FVector ThrowDirection = FVector(1.0f, 0.0f, 1.0f).GetSafeNormal(); // Example throw direction
-		WeaponMesh->AddImpulse(ThrowDirection * 1000.0f); // Apply impulse force
+		FVector ThrowDirection = FVector(1.0f, 0.0f, 1.0f).GetSafeNormal(); //Throw direction
+		WeaponMesh->AddImpulse(ThrowDirection * 1000.0f); //Apply force
 	}
 }
 
