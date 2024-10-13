@@ -134,44 +134,51 @@ FVector AProceduralRoom::GetRandomPointInSquare(const FVector& UpperLeft, const 
     //Place the point to spawn a chest within the grid
 void AProceduralRoom::PlacePointOnGrid()
 {
-    for(int32 i =0; i<GridSizeX - 1; i++)
+    for (int32 i = 0; i < GridSizeX - 1; i++)
     {
-        for(int32 j = 0; j<GridSizeY - 1; j++)
+        for (int32 j = 0; j < GridSizeY - 1; j++)
         {
+            //Ensure that the spawning will always happen within the grid
             FVector UpperLeft(i * VertexSpacing + ChestRadius, j * VertexSpacing + ChestRadius, GridHeight);
-            FVector LowerRight((i* VertexSpacing + VertexSpacing)- ChestRadius,
-                (j* VertexSpacing + VertexSpacing) - ChestRadius, GridHeight);
+            FVector LowerRight((i * VertexSpacing + VertexSpacing) - ChestRadius,
+                (j * VertexSpacing + VertexSpacing) - ChestRadius, GridHeight);
 
-            FVector RandomPointInSquare = GetRandomPointInSquare(UpperLeft,LowerRight);
+            //Random point is placed within the grid square
+            FVector RandomPointInSquare = GetRandomPointInSquare(UpperLeft, LowerRight);
 
+            //Calculate object spawn position
             float BarrelSpawnOffsetX = FMath::RandRange(100.f, 300.f);
-            float BrazierSpawnOffsetX= FMath::RandRange(300.f, 400.f);
-            float BarrelSpawnOffsetY= FMath::RandRange(100.f, 300.f);
-            float BrazierSpawnOffsetY= FMath::RandRange(300.f, 400.f);
+            float BrazierSpawnOffsetX = FMath::RandRange(300.f, 400.f);
+            float BarrelSpawnOffsetY = FMath::RandRange(100.f, 300.f);
+            float BrazierSpawnOffsetY = FMath::RandRange(300.f, 400.f);
+
+            FVector BarrelPosition = RandomPointInSquare + FVector(BarrelRadius + BarrelSpawnOffsetX, BarrelSpawnOffsetY, 0.f);
+            FVector BrazierPosition = RandomPointInSquare + FVector(-(BrazierRadius + BrazierSpawnOffsetX), BrazierSpawnOffsetY, 0.f);
             
-            FVector BarrelPosition = RandomPointInSquare + FVector(BarrelRadius + BarrelSpawnOffsetX, BarrelSpawnOffsetY, 0.f);  
-            FVector BrazierPosition = RandomPointInSquare + FVector(-(BrazierRadius + BrazierSpawnOffsetX),BrazierSpawnOffsetY, 0.f);
+            BarrelPosition.X = FMath::Clamp(BarrelPosition.X, TopLeft.X, BottomRight.X - BarrelRadius);
+            BarrelPosition.Y = FMath::Clamp(BarrelPosition.Y, TopLeft.Y, BottomRight.Y - BarrelRadius);
             
-            float RandomYaw = FMath::FRandRange(0.f,360.f);
+            BrazierPosition.X = FMath::Clamp(BrazierPosition.X, TopLeft.X, BottomRight.X - BrazierRadius);
+            BrazierPosition.Y = FMath::Clamp(BrazierPosition.Y, TopLeft.Y, BottomRight.Y - BrazierRadius);
+
+            float RandomYaw = FMath::FRandRange(0.f, 360.f);
             
             AActor* SpawnedChest = GetWorld()->SpawnActor<AActor>(ChestClass, RandomPointInSquare, FRotator(0.f, RandomYaw, 0.f));
             if (SpawnedChest)
             {
-                SpawnedObjects.Add(SpawnedChest); //Add spawned chest to the list
+                SpawnedObjects.Add(SpawnedChest);
             }
-
-            //Spawn barrel at the calculated barrel position
+            
             AActor* SpawnedBarrel = GetWorld()->SpawnActor<AActor>(BarrelClass, BarrelPosition, FRotator(0.f, RandomYaw, 0.f));
             if (SpawnedBarrel)
             {
-                SpawnedObjects.Add(SpawnedBarrel); //Add spawned barrel to the list
+                SpawnedObjects.Add(SpawnedBarrel);
             }
-
-            //Spawn brazier at the calculated brazier position
+            
             AActor* SpawnedBrazier = GetWorld()->SpawnActor<AActor>(BrazierClass, BrazierPosition, FRotator(0.f, RandomYaw, 0.f));
             if (SpawnedBrazier)
             {
-                SpawnedObjects.Add(SpawnedBrazier); //Add spawned brazier to the list
+                SpawnedObjects.Add(SpawnedBrazier);
             }
         }
     }
