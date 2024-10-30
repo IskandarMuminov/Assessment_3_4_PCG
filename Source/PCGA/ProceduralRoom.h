@@ -5,9 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "ProceduralMeshComponent.h"
+#include "Components/ArrowComponent.h"
+#include "Components/BoxComponent.h"
 #include "ProceduralRoom.generated.h"
 
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class PCGA_API AProceduralRoom : public AActor
 {
 	GENERATED_BODY()
@@ -15,6 +17,7 @@ class PCGA_API AProceduralRoom : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AProceduralRoom();
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -43,6 +46,30 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual bool ShouldTickIfViewportsOnly() const override;
+
+	/** Root scene component */
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Default", meta=(AllowPrivateAccess= "true"))
+	TObjectPtr<USceneComponent> DefaultSceneRoot;
+
+	/** Scene component for organizing exits */
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Default", meta=(AllowPrivateAccess= "true"))
+	TObjectPtr<USceneComponent> ExitsFolder;
+
+	/** Box component for detecting overlaps */
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Default", meta=(AllowPrivateAccess= "true"))
+	TObjectPtr<UBoxComponent> OverlapBox1;
+
+	/** Scene component for organizing overlap-related components */
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Default", meta=(AllowPrivateAccess= "true"))
+	TObjectPtr<USceneComponent> OverlapFolder;
+
+	/** Scene component for organizing geometry components */
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Default", meta=(AllowPrivateAccess= "true"))
+	TObjectPtr<USceneComponent> GeometryFolder;
+
+	/** Arrow component indicating the forward direction of the room */
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category="Default", meta=(AllowPrivateAccess= "true"))
+	TObjectPtr<UArrowComponent> Arrow;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))

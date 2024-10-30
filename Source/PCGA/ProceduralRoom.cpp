@@ -7,9 +7,24 @@
 AProceduralRoom::AProceduralRoom()
 {
     PrimaryActorTick.bCanEverTick = true;
+    
+    // Initialize the root component
+    DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
+    SetRootComponent(DefaultSceneRoot);
 
-    Floor= CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("Floor Component"));
-    SetRootComponent(Floor);
+    // Initialize the organizational scene components and attach them to the root
+    ExitsFolder = CreateDefaultSubobject<USceneComponent>(TEXT("ExitsFolder"));
+    ExitsFolder->SetupAttachment(DefaultSceneRoot);
+
+    OverlapFolder = CreateDefaultSubobject<USceneComponent>(TEXT("OverlapFolder"));
+    OverlapFolder->SetupAttachment(DefaultSceneRoot);
+
+    GeometryFolder = CreateDefaultSubobject<USceneComponent>(TEXT("GeometryFolder"));
+    GeometryFolder->SetupAttachment(DefaultSceneRoot);
+
+    // Initialize the Floor component and attach it to the GeometryFolder
+    Floor = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("Floor"));
+    Floor->SetupAttachment(GeometryFolder);
     
     TopLeft = FVector(0.f);
     BottomRight = FVector(1000.f, 1000.f , 0.f );
