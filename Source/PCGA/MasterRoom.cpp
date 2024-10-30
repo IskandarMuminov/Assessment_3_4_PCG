@@ -23,13 +23,21 @@ AMasterRoom::AMasterRoom()
 		RoomMesh->SetStaticMesh(MeshAsset.Object);
 	}
 
+	TopLeft = FVector(0.f);
+	BottomRight = FVector(1000.f, 1000.f , 0.f );
+	GridHeight = 1.f;
+	ChestRadius = 100.f;
+
 }
 
 // Called when the game starts or when spawned
 void AMasterRoom::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	ClearGrid();
+	CreateGrid();
+	ClearObjects();
+	PlacePointOnGrid();
 }
 
 TArray<USceneComponent*> AMasterRoom::GetExits() const
@@ -62,6 +70,11 @@ void AMasterRoom::Tick(float DeltaTime)
 		bShouldRegenerate = false;
 	}
 
+}
+
+bool AMasterRoom::ShouldTickIfViewportsOnly() const
+{
+	return true;
 }
 
 void AMasterRoom::AddExit(USceneComponent* ExitPoint)
