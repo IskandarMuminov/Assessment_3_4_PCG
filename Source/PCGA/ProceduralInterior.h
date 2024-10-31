@@ -52,7 +52,7 @@ private:
 	
 
 	float GridHeight;
-
+	
 	FVector TopLeft;
 	FVector BottomRight;
 	

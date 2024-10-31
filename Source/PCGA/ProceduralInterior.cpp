@@ -7,6 +7,7 @@
 UProceduralInterior::UProceduralInterior()
 {
     PrimaryComponentTick.bCanEverTick = true;
+    GridHeight = 2.f;
 }
 
 // Called when the game starts
@@ -27,10 +28,14 @@ void UProceduralInterior::SetBoundsToParent()
         FVector Origin;
         FVector BoxExtent;
         
-        Owner->GetActorBounds(false, Origin, BoxExtent);  // Get the bounds of the parent actor
+        Owner->GetActorBounds(false, Origin, BoxExtent); // Get the bounds of the parent actor
         
+        // Ensure bounds are correctly set for object placement within the room dimensions
         TopLeft = Origin - BoxExtent;
         BottomRight = Origin + BoxExtent;
+        
+        // Log the bounds for debugging
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("TopLeft: %s, BottomRight: %s"), *TopLeft.ToString(), *BottomRight.ToString()));
     }
 }
 
@@ -46,45 +51,67 @@ void UProceduralInterior::CreateGrid()
     {
         for (int32 X = 0; X < GridSizeX; X++)
         {
-            FVector VertexLocation = FVector(X * VertexSpacing, Y * VertexSpacing, 0.f);
+            // Calculate vertex location
+            FVector VertexLocation = FVector(TopLeft.X + X * VertexSpacing, TopLeft.Y + Y * VertexSpacing, 0.f);
             Vertices.Add(VertexLocation);
             UVCoords.Add(FVector2D(X, Y));
 
-            Triangles.Add(Y * GridSizeX + X);
-            Triangles.Add((Y + 1) * GridSizeX + X);
-            Triangles.Add(Y * GridSizeX + X + 1);
-            Triangles.Add(Y * GridSizeX + X + 1);
-            Triangles.Add((Y + 1) * GridSizeX + X);
-            Triangles.Add((Y + 1) * GridSizeX + X + 1);
+            // Draw horizontal lines
+            if (X < GridSizeX - 1) // Ensure within bounds
+            {
+                FVector NextVertexLocation = FVector(TopLeft.X + (X + 1) * VertexSpacing, TopLeft.Y + Y * VertexSpacing, 0.f);
+                DrawDebugLine(GetWorld(), VertexLocation, NextVertexLocation, FColor::Blue, true, -1.f, 0, 2.f);
+            }
+
+            // Draw vertical lines
+            if (Y < GridSizeY - 1) // Ensure within bounds
+            {
+                FVector NextVertexLocation = FVector(TopLeft.X + X * VertexSpacing, TopLeft.Y + (Y + 1) * VertexSpacing, 0.f);
+                DrawDebugLine(GetWorld(), VertexLocation, NextVertexLocation, FColor::Blue, true, -1.f, 0, 2.f);
+            }
+
+            // Triangles for procedural mesh (for completeness)
+            if (X < GridSizeX - 1 && Y < GridSizeY - 1)
+            {
+                int32 Index = Y * GridSizeX + X;
+                Triangles.Add(Index);
+                Triangles.Add(Index + GridSizeX);
+                Triangles.Add(Index + 1);
+                Triangles.Add(Index + 1);
+                Triangles.Add(Index + GridSizeX);
+                Triangles.Add(Index + GridSizeX + 1);
+            }
         }
     }
 }
 
 void UProceduralInterior::PlaceObjectsOnGrid()
 {
-    for (int32 i = 0; i < GridSizeX - 1; i++)
+    // Iterate only within grid cells (no overlapping edge placement)
+    for (int32 i = 0; i < GridSizeX; i++)
     {
-        for (int32 j = 0; j < GridSizeY - 1; j++)
+        for (int32 j = 0; j < GridSizeY; j++)
         {
-            FVector UpperLeft = FVector(i * VertexSpacing + ChestRadius, j * VertexSpacing + ChestRadius, GridHeight);
-            FVector LowerRight = FVector((i * VertexSpacing + VertexSpacing) - ChestRadius,
-                (j * VertexSpacing + VertexSpacing) - ChestRadius, GridHeight);
+            // Define bounds for current cell
+            FVector UpperLeft = FVector(TopLeft.X + i * VertexSpacing + ChestRadius, 
+                                        TopLeft.Y + j * VertexSpacing + ChestRadius, GridHeight);
+            FVector LowerRight = FVector(TopLeft.X + (i + 1) * VertexSpacing - ChestRadius,
+                                         TopLeft.Y + (j + 1) * VertexSpacing - ChestRadius, GridHeight);
 
-            FVector RandomChestPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
-            FVector RandomBarrelPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
-            FVector RandomBrazierPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
+            // Check if we are within bounds before spawning objects
+            if (i < GridSizeX - 1 && j < GridSizeY - 1)
+            {
+                FVector RandomChestPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
+                FVector RandomBarrelPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
+                FVector RandomBrazierPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
 
-            RandomBarrelPoint.X = FMath::Clamp(RandomBarrelPoint.X, TopLeft.X, BottomRight.X - BarrelRadius);
-            RandomBarrelPoint.Y = FMath::Clamp(RandomBarrelPoint.Y, TopLeft.Y, BottomRight.Y - BarrelRadius);
+                float RandomYaw = FMath::FRandRange(0.f, 360.f);
 
-            RandomBrazierPoint.X = FMath::Clamp(RandomBrazierPoint.X, TopLeft.X, BottomRight.X - BrazierRadius);
-            RandomBrazierPoint.Y = FMath::Clamp(RandomBrazierPoint.Y, TopLeft.Y, BottomRight.Y - BrazierRadius);
-
-            float RandomYaw = FMath::FRandRange(0.f, 360.f);
-
-            SpawnObjectAtLocation(ChestClass, RandomChestPoint, RandomYaw);
-            SpawnObjectAtLocation(BarrelClass, RandomBarrelPoint, RandomYaw);
-            SpawnObjectAtLocation(BrazierClass, RandomBrazierPoint, RandomYaw);
+                // Spawn objects at calculated random points within the defined bounds
+                SpawnObjectAtLocation(ChestClass, RandomChestPoint, RandomYaw);
+                SpawnObjectAtLocation(BarrelClass, RandomBarrelPoint, RandomYaw);
+                SpawnObjectAtLocation(BrazierClass, RandomBrazierPoint, RandomYaw);
+            }
         }
     }
 }
