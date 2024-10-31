@@ -3,26 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "ProceduralMeshComponent.h"
-#include "Components/ArrowComponent.h"
-#include "Components/BoxComponent.h"
-#include "ProceduralRoom.generated.h"
+#include "Components/ActorComponent.h"
+#include "ProceduralInterior.generated.h"
 
-UCLASS(Blueprintable, BlueprintType)
-class PCGA_API AProceduralRoom : public AActor
+
+UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class PCGA_API UProceduralInterior : public UActorComponent
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	AProceduralRoom();
 
+public:	
+	// Sets default values for this component's properties
+	UProceduralInterior();
 
 protected:
-	// Called when the game starts or when spawned
+	// Called when the game starts
 	virtual void BeginPlay() override;
-
+	void SetBoundsToParent();
 	UPROPERTY()
 	TArray<FVector> Vertices;
 	UPROPERTY()
@@ -31,9 +29,6 @@ protected:
 	TArray<FVector2D> UVCoords;
 	UPROPERTY()
 	TArray<AActor*> SpawnedObjects;
-
-	UPROPERTY(EditAnywhere)
-	bool bShouldRegenerate;
 	
 	UPROPERTY(EditAnywhere, Category="Spawned Object")
 	float ChestRadius;
@@ -43,10 +38,7 @@ protected:
 	float BrazierRadius;
 public:	
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	virtual bool ShouldTickIfViewportsOnly() const override;
-
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
 	UProceduralMeshComponent* Floor;
@@ -70,13 +62,10 @@ private:
 	int32 GridSizeY;
 	UPROPERTY(EditAnywhere, Category="GridSize")
 	float VertexSpacing;
-
-	void SpawnObject(UClass* ItemToSpawn);
-	void ClearObjects();
+	
 	void CreateGrid();
-	void ClearGrid();
+	void PlaceObjectsOnGrid();
 
+	void SpawnObjectAtLocation(UClass* ItemToSpawn, const FVector& Location, float Yaw);
 	FVector GetRandomPointInSquare(const FVector& UpperLeft, const FVector& LowerRight);
-
-	void PlacePointOnGrid();
 };
