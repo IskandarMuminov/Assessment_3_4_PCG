@@ -52,6 +52,7 @@ private:
 	
 
 	float GridHeight;
+	float GridOffset;
 	
 	FVector TopLeft;
 	FVector BottomRight;
@@ -65,7 +66,8 @@ private:
 	
 	void CreateGrid();
 	void PlaceObjectsOnGrid();
-
+	
 	void SpawnObjectAtLocation(UClass* ItemToSpawn, const FVector& Location, float Yaw);
 	FVector GetRandomPointInSquare(const FVector& UpperLeft, const FVector& LowerRight);
+	bool IsPointBlocked(const FVector& Point);
 };

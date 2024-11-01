@@ -7,7 +7,8 @@
 UProceduralInterior::UProceduralInterior()
 {
     PrimaryComponentTick.bCanEverTick = true;
-    GridHeight = 2.f;
+    GridHeight = 50.f;
+    GridOffset = 1000.f;
 }
 
 // Called when the game starts
@@ -33,9 +34,6 @@ void UProceduralInterior::SetBoundsToParent()
         // Ensure bounds are correctly set for object placement within the room dimensions
         TopLeft = Origin - BoxExtent;
         BottomRight = Origin + BoxExtent;
-        
-        // Log the bounds for debugging
-        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("TopLeft: %s, BottomRight: %s"), *TopLeft.ToString(), *BottomRight.ToString()));
     }
 }
 
@@ -51,22 +49,22 @@ void UProceduralInterior::CreateGrid()
     {
         for (int32 X = 0; X < GridSizeX; X++)
         {
-            // Calculate vertex location
-            FVector VertexLocation = FVector(TopLeft.X + X * VertexSpacing, TopLeft.Y + Y * VertexSpacing, 0.f);
+            // Calculate vertex location with Y offset
+            FVector VertexLocation = FVector(TopLeft.X + X * VertexSpacing, TopLeft.Y + Y * VertexSpacing + GridOffset, GridHeight);
             Vertices.Add(VertexLocation);
             UVCoords.Add(FVector2D(X, Y));
 
             // Draw horizontal lines
             if (X < GridSizeX - 1) // Ensure within bounds
             {
-                FVector NextVertexLocation = FVector(TopLeft.X + (X + 1) * VertexSpacing, TopLeft.Y + Y * VertexSpacing, 0.f);
+                FVector NextVertexLocation = FVector(TopLeft.X + (X + 1) * VertexSpacing, TopLeft.Y + Y * VertexSpacing + GridOffset, GridHeight);
                 DrawDebugLine(GetWorld(), VertexLocation, NextVertexLocation, FColor::Blue, true, -1.f, 0, 2.f);
             }
 
             // Draw vertical lines
             if (Y < GridSizeY - 1) // Ensure within bounds
             {
-                FVector NextVertexLocation = FVector(TopLeft.X + X * VertexSpacing, TopLeft.Y + (Y + 1) * VertexSpacing, 0.f);
+                FVector NextVertexLocation = FVector(TopLeft.X + X * VertexSpacing, TopLeft.Y + (Y + 1) * VertexSpacing + GridOffset, GridHeight);
                 DrawDebugLine(GetWorld(), VertexLocation, NextVertexLocation, FColor::Blue, true, -1.f, 0, 2.f);
             }
 
@@ -92,11 +90,11 @@ void UProceduralInterior::PlaceObjectsOnGrid()
     {
         for (int32 j = 0; j < GridSizeY; j++)
         {
-            // Define bounds for current cell
+            // Define bounds for current cell with Y offset
             FVector UpperLeft = FVector(TopLeft.X + i * VertexSpacing + ChestRadius, 
-                                        TopLeft.Y + j * VertexSpacing + ChestRadius, GridHeight);
+                                        TopLeft.Y + j * VertexSpacing + ChestRadius + 1000.f, GridHeight);
             FVector LowerRight = FVector(TopLeft.X + (i + 1) * VertexSpacing - ChestRadius,
-                                         TopLeft.Y + (j + 1) * VertexSpacing - ChestRadius, GridHeight);
+                                         TopLeft.Y + (j + 1) * VertexSpacing - ChestRadius + 1000.f, GridHeight);
 
             // Check if we are within bounds before spawning objects
             if (i < GridSizeX - 1 && j < GridSizeY - 1)
@@ -107,10 +105,21 @@ void UProceduralInterior::PlaceObjectsOnGrid()
 
                 float RandomYaw = FMath::FRandRange(0.f, 360.f);
 
-                // Spawn objects at calculated random points within the defined bounds
-                SpawnObjectAtLocation(ChestClass, RandomChestPoint, RandomYaw);
-                SpawnObjectAtLocation(BarrelClass, RandomBarrelPoint, RandomYaw);
-                SpawnObjectAtLocation(BrazierClass, RandomBrazierPoint, RandomYaw);
+                // Spawn objects only if there is no collision at the location
+                if (!IsPointBlocked(RandomChestPoint))
+                {
+                    SpawnObjectAtLocation(ChestClass, RandomChestPoint, RandomYaw);
+                }
+
+                if (!IsPointBlocked(RandomBarrelPoint))
+                {
+                    SpawnObjectAtLocation(BarrelClass, RandomBarrelPoint, RandomYaw);
+                }
+
+                if (!IsPointBlocked(RandomBrazierPoint))
+                {
+                    SpawnObjectAtLocation(BrazierClass, RandomBrazierPoint, RandomYaw);
+                }
             }
         }
     }
@@ -132,5 +141,18 @@ FVector UProceduralInterior::GetRandomPointInSquare(const FVector& UpperLeft, co
 {
     float RandomX = FMath::FRandRange(UpperLeft.X, LowerRight.X);
     float RandomY = FMath::FRandRange(UpperLeft.Y, LowerRight.Y);
-    return FVector(RandomX, RandomY, 0.f);
+    return FVector(RandomX, RandomY, GridHeight);
+}
+
+// Check if a point is blocked by a collision
+bool UProceduralInterior::IsPointBlocked(const FVector& Point)
+{
+    FHitResult HitResult;
+    FCollisionQueryParams CollisionParams;
+    CollisionParams.AddIgnoredActor(GetOwner()); // Ignore the parent actor
+
+    // Perform a sphere trace to check for collisions around the point
+    return GetWorld()->SweepSingleByChannel(HitResult, 
+        Point, Point, FQuat::Identity, ECC_PhysicsBody, 
+        FCollisionShape::MakeSphere(50.f), CollisionParams);
 }
