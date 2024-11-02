@@ -28,8 +28,11 @@ void UProceduralInterior::SetBoundsToParent()
     {
         FVector Origin;
         FVector BoxExtent;
-        
+
         Owner->GetActorBounds(false, Origin, BoxExtent); // Get the bounds of the parent actor
+
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Owner Name: %s"), *Owner->GetName()));
+
         
         // Ensure bounds are correctly set for object placement within the room dimensions
         TopLeft = Origin - BoxExtent;
@@ -50,21 +53,21 @@ void UProceduralInterior::CreateGrid()
         for (int32 X = 0; X < GridSizeX; X++)
         {
             // Calculate vertex location with Y offset
-            FVector VertexLocation = FVector(TopLeft.X + X * VertexSpacing, TopLeft.Y + Y * VertexSpacing + GridOffset, GridHeight);
+            FVector VertexLocation = FVector(TopLeft.X + X * VertexSpacing, TopLeft.Y + Y * VertexSpacing, GridHeight);
             Vertices.Add(VertexLocation);
             UVCoords.Add(FVector2D(X, Y));
 
             // Draw horizontal lines
             if (X < GridSizeX - 1) // Ensure within bounds
             {
-                FVector NextVertexLocation = FVector(TopLeft.X + (X + 1) * VertexSpacing, TopLeft.Y + Y * VertexSpacing + GridOffset, GridHeight);
+                FVector NextVertexLocation = FVector(TopLeft.X + (X + 1) * VertexSpacing, TopLeft.Y + Y * VertexSpacing, GridHeight);
                 DrawDebugLine(GetWorld(), VertexLocation, NextVertexLocation, FColor::Blue, true, -1.f, 0, 2.f);
             }
 
             // Draw vertical lines
             if (Y < GridSizeY - 1) // Ensure within bounds
             {
-                FVector NextVertexLocation = FVector(TopLeft.X + X * VertexSpacing, TopLeft.Y + (Y + 1) * VertexSpacing + GridOffset, GridHeight);
+                FVector NextVertexLocation = FVector(TopLeft.X + X * VertexSpacing, TopLeft.Y + (Y + 1) * VertexSpacing, GridHeight);
                 DrawDebugLine(GetWorld(), VertexLocation, NextVertexLocation, FColor::Blue, true, -1.f, 0, 2.f);
             }
 
@@ -144,15 +147,28 @@ FVector UProceduralInterior::GetRandomPointInSquare(const FVector& UpperLeft, co
     return FVector(RandomX, RandomY, GridHeight);
 }
 
-// Check if a point is blocked by a collision
 bool UProceduralInterior::IsPointBlocked(const FVector& Point)
 {
-    FHitResult HitResult;
+    TArray<FHitResult> HitResults;
     FCollisionQueryParams CollisionParams;
     CollisionParams.AddIgnoredActor(GetOwner()); // Ignore the parent actor
 
-    // Perform a sphere trace to check for collisions around the point
-    return GetWorld()->SweepSingleByChannel(HitResult, 
-        Point, Point, FQuat::Identity, ECC_PhysicsBody, 
-        FCollisionShape::MakeSphere(50.f), CollisionParams);
+    // Perform a multi-sphere trace to check for multiple collisions around the point
+    bool bHit = GetWorld()->SweepMultiByChannel(
+        HitResults, Point, Point, FQuat::Identity, 
+        ECC_Visibility, FCollisionShape::MakeSphere(60.f), CollisionParams);
+
+    if (bHit)
+    {
+        for (const FHitResult& Hit : HitResults)
+        {
+            // Check if the hit component is not the "Floor"
+            if (Hit.GetComponent() && Hit.GetComponent()->GetName() != "Floor")
+            {
+                return true; // Blocked if we hit anything other than the floor
+            }
+        }
+    }
+
+    return false; // Not blocked if we only hit the floor or nothing at all
 }

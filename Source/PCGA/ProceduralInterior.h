@@ -39,6 +39,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
 	UProceduralMeshComponent* Floor;
@@ -53,7 +54,6 @@ private:
 
 	float GridHeight;
 	float GridOffset;
-	
 	FVector TopLeft;
 	FVector BottomRight;
 	
