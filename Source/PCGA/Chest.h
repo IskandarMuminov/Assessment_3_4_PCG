@@ -33,6 +33,7 @@ public:
 	void OnInteract();
 
 	void ResetInteraction();
+	void ServerOnInteract();
 
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 	
@@ -47,8 +48,12 @@ public:
 	
 	UPROPERTY(EditAnywhere, Category = "Interaction")
 	float InteractionCooldown;
-
+	
 private:
 	FTimerHandle InteractionTimerHandle;
 	bool bCanInteract;
+
+	bool ServerOnInteract_Validate();
+	void OnRep_CanInteract();
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };
