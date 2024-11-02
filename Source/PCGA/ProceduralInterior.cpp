@@ -32,7 +32,7 @@ void UProceduralInterior::SetBoundsToParent()
 
         Owner->GetActorBounds(false, Origin, BoxExtent); // Get the bounds of the parent actor
 
-        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Owner Name: %s"), *Owner->GetName()));
+       // GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Owner Name: %s"), *Owner->GetName()));
 
         
         // Ensure bounds are correctly set for object placement within the room dimensions
@@ -153,8 +153,7 @@ bool UProceduralInterior::IsPointBlocked(const FVector& Point)
     // Perform a multi-sphere trace to check for multiple collisions around the point
     bool bHit = GetWorld()->SweepMultiByChannel(
         HitResults, Point, Point, FQuat::Identity, 
-        ECC_Visibility, FCollisionShape::MakeSphere(60.f), CollisionParams);
-
+        ECC_Visibility, FCollisionShape::MakeSphere(100.f), CollisionParams);
     if (bHit)
     {
         for (const FHitResult& Hit : HitResults)
@@ -162,10 +161,11 @@ bool UProceduralInterior::IsPointBlocked(const FVector& Point)
             // Check if the hit component is not the "Floor"
             if (Hit.GetComponent() && Hit.GetComponent()->GetName() != "Floor")
             {
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Hit the wall")));
                 return true; // Blocked if we hit anything other than the floor
             }
         }
     }
-
+    
     return false; // Not blocked if we only hit the floor or nothing at all
 }

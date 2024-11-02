@@ -50,7 +50,7 @@ protected:
 	float GridOffset;
 	FVector TopLeft;
 	FVector BottomRight;
-	
+
 	UPROPERTY(EditAnywhere, Category="GridSize")
 	int32 GridSizeX;
 	UPROPERTY(EditAnywhere, Category="GridSize")
