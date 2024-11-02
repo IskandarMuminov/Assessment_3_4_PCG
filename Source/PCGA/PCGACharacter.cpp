@@ -147,8 +147,6 @@ void APCGACharacter::Interact(const FInputActionValue& Value)
 		{
 			FString Message = FString::Printf(TEXT("No chest found, hit: %s"), *HitResult.GetActor()->GetName());
 			UE_LOG(LogTemp, Warning, TEXT("%s"), *Message);
-			
-			// Show message on screen
 			if (GEngine)
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Message);
@@ -159,8 +157,6 @@ void APCGACharacter::Interact(const FInputActionValue& Value)
 	{
 		FString Message = TEXT("Nothing to interact with");
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *Message);
-		
-		// Show message on screen
 		if (GEngine)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, Message);

@@ -9,7 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c949d30e-2fe8-462a-9467-3dd33a6f0887" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/Source/PCGA/Chest.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/PCGA/Chest.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/PCGA/Chest.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/PCGA/Chest.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/PCGA/PCGACharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/PCGA/PCGACharacter.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +189,7 @@
       <option name="presentableId" value="Default" />
       <updated>1730281365657</updated>
       <workItem from="1730281368872" duration="361000" />
-      <workItem from="1730527915948" duration="7832000" />
+      <workItem from="1730527915948" duration="8401000" />
     </task>
     <servers />
   </component>
