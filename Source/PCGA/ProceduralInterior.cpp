@@ -2,6 +2,7 @@
 #include "ProceduralMeshComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/Actor.h"
+#include "GeometryCollection/GeometryCollectionActor.h"
 
 // Sets default values for this component's properties
 UProceduralInterior::UProceduralInterior()
@@ -134,6 +135,7 @@ void UProceduralInterior::SpawnObjectAtLocation(UClass* ItemToSpawn, const FVect
         SpawnedObjects.Add(SpawnedObject);
     }
 }
+
 
 FVector UProceduralInterior::GetRandomPointInSquare(const FVector& UpperLeft, const FVector& LowerRight)
 {

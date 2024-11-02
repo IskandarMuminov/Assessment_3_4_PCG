@@ -5,6 +5,9 @@
 #include "CoreMinimal.h"
 #include "ProceduralMeshComponent.h"
 #include "Components/ActorComponent.h"
+#include "GeometryCollection/GeometryCollectionActor.h"
+#include "GeometryCollection/GeometryCollectionComponent.h"
+#include "GeometryCollection/GeometryCollectionObject.h"
 #include "ProceduralInterior.generated.h"
 
 
@@ -41,6 +44,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
 	TArray<TSubclassOf<AActor>> SpawnableObjects;
 	
+protected:
 
 	float GridHeight;
 	float GridOffset;
@@ -58,6 +62,8 @@ private:
 	void PlaceObjectsOnGrid();
 	
 	void SpawnObjectAtLocation(UClass* ItemToSpawn, const FVector& Location, float Yaw);
+	void SpawnGeometryAtLocation(TSubclassOf<UGeometryCollection> GeometryToSpawn, const FVector& Location,
+	                             float Yaw);
 	FVector GetRandomPointInSquare(const FVector& UpperLeft, const FVector& LowerRight);
 	bool IsPointBlocked(const FVector& Point);
 };
