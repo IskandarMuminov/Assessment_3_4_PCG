@@ -16,10 +16,10 @@ UProceduralInterior::UProceduralInterior()
 void UProceduralInterior::BeginPlay()
 {
     Super::BeginPlay();
-    
-    SetBoundsToParent();
-    CreateGrid();
-    PlaceObjectsOnGrid();
+
+        SetBoundsToParent();
+        CreateGrid();
+        PlaceObjectsOnGrid();
 }
 
 // Dynamically set bounds based on parent actor's size

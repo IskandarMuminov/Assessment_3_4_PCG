@@ -51,6 +51,7 @@ protected:
 	FVector TopLeft;
 	FVector BottomRight;
 
+
 	UPROPERTY(EditAnywhere, Category="GridSize")
 	int32 GridSizeX;
 	UPROPERTY(EditAnywhere, Category="GridSize")
@@ -66,4 +67,5 @@ protected:
 	                             float Yaw);
 	FVector GetRandomPointInSquare(const FVector& UpperLeft, const FVector& LowerRight);
 	bool IsPointBlocked(const FVector& Point);
+
 };
