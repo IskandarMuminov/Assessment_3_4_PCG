@@ -105,6 +105,8 @@ void UProceduralInterior::PlaceObjectsOnGrid()
                 FVector RandomChestPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
                 FVector RandomBarrelPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
                 FVector RandomBrazierPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
+                FVector RandomSkeletonPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
+                FVector RandomPotteryPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
 
                 float RandomYaw = FMath::FRandRange(0.f, 360.f);
 
@@ -122,6 +124,15 @@ void UProceduralInterior::PlaceObjectsOnGrid()
                 if (!IsPointBlocked(RandomBrazierPoint))
                 {
                     SpawnObjectAtLocation(BrazierClass, RandomBrazierPoint, RandomYaw);
+                }
+
+                if (!IsPointBlocked(RandomSkeletonPoint))
+                {
+                    SpawnObjectAtLocation(SkeletonClass, RandomSkeletonPoint, RandomYaw);
+                }
+                if (!IsPointBlocked(RandomPotteryPoint))
+                {
+                    SpawnObjectAtLocation(PotteryClass, RandomPotteryPoint, RandomYaw);
                 }
             }
         }

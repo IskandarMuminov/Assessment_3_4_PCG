@@ -36,6 +36,10 @@ protected:
 	float BarrelRadius;
 	UPROPERTY(EditAnywhere, Category="Spawned Object")
 	float BrazierRadius;
+	UPROPERTY(EditAnywhere, Category="Spawned Object")
+	float SkeletRadius;
+	UPROPERTY(EditAnywhere, Category="Spawned Object")
+	float PotteryRadius;
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -49,7 +53,10 @@ private:
 	TSubclassOf<AActor> BarrelClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
 	TSubclassOf<AActor> BrazierClass;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
+	TSubclassOf<AActor> SkeletonClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
+	TSubclassOf<AActor> PotteryClass;
 	
 
 	float GridHeight;
