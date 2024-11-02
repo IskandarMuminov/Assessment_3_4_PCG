@@ -93,46 +93,30 @@ void UProceduralInterior::PlaceObjectsOnGrid()
     {
         for (int32 j = 0; j < GridSizeY; j++)
         {
-            // Define bounds for current cell with Y offset
-            FVector UpperLeft = FVector(TopLeft.X + i * VertexSpacing + ChestRadius, 
-                                        TopLeft.Y + j * VertexSpacing + ChestRadius + 1000.f, GridHeight);
-            FVector LowerRight = FVector(TopLeft.X + (i + 1) * VertexSpacing - ChestRadius,
-                                         TopLeft.Y + (j + 1) * VertexSpacing - ChestRadius + 1000.f, GridHeight);
+            // Define bounds for the current cell with Y offset
+            FVector UpperLeft = FVector(TopLeft.X + i * VertexSpacing + ObjectRadius, 
+                                        TopLeft.Y + j * VertexSpacing + ObjectRadius + 1000.f, GridHeight);
+            FVector LowerRight = FVector(TopLeft.X + (i + 1) * VertexSpacing - ObjectRadius,
+                                         TopLeft.Y + (j + 1) * VertexSpacing - ObjectRadius + 1000.f, GridHeight);
 
             // Check if we are within bounds before spawning objects
             if (i < GridSizeX - 1 && j < GridSizeY - 1)
             {
-                FVector RandomChestPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
-                FVector RandomBarrelPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
-                FVector RandomBrazierPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
-                FVector RandomSkeletonPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
-                FVector RandomPotteryPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
-
-                float RandomYaw = FMath::FRandRange(0.f, 360.f);
-
-                // Spawn objects only if there is no collision at the location
-                if (!IsPointBlocked(RandomChestPoint))
+                // Iterate through each object class in the SpawnableObjects array
+                for (TSubclassOf<AActor> ObjectClass : SpawnableObjects)
                 {
-                    SpawnObjectAtLocation(ChestClass, RandomChestPoint, RandomYaw);
-                }
+                    if (ObjectClass)
+                    {
+                        // Generate a random location within the cell and a random yaw
+                        FVector RandomPoint = GetRandomPointInSquare(UpperLeft, LowerRight);
+                        float RandomYaw = FMath::FRandRange(0.f, 360.f);
 
-                if (!IsPointBlocked(RandomBarrelPoint))
-                {
-                    SpawnObjectAtLocation(BarrelClass, RandomBarrelPoint, RandomYaw);
-                }
-
-                if (!IsPointBlocked(RandomBrazierPoint))
-                {
-                    SpawnObjectAtLocation(BrazierClass, RandomBrazierPoint, RandomYaw);
-                }
-
-                if (!IsPointBlocked(RandomSkeletonPoint))
-                {
-                    SpawnObjectAtLocation(SkeletonClass, RandomSkeletonPoint, RandomYaw);
-                }
-                if (!IsPointBlocked(RandomPotteryPoint))
-                {
-                    SpawnObjectAtLocation(PotteryClass, RandomPotteryPoint, RandomYaw);
+                        // Spawn the object only if there is no collision at the location
+                        if (!IsPointBlocked(RandomPoint))
+                        {
+                            SpawnObjectAtLocation(ObjectClass, RandomPoint, RandomYaw);
+                        }
+                    }
                 }
             }
         }

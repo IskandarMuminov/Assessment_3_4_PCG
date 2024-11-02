@@ -31,32 +31,15 @@ protected:
 	TArray<AActor*> SpawnedObjects;
 	
 	UPROPERTY(EditAnywhere, Category="Spawned Object")
-	float ChestRadius;
-	UPROPERTY(EditAnywhere, Category="Spawned Object")
-	float BarrelRadius;
-	UPROPERTY(EditAnywhere, Category="Spawned Object")
-	float BrazierRadius;
-	UPROPERTY(EditAnywhere, Category="Spawned Object")
-	float SkeletRadius;
-	UPROPERTY(EditAnywhere, Category="Spawned Object")
-	float PotteryRadius;
+	float ObjectRadius;
+	
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
-	UProceduralMeshComponent* Floor;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
-	TSubclassOf<AActor> ChestClass;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
-	TSubclassOf<AActor> BarrelClass;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
-	TSubclassOf<AActor> BrazierClass;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
-	TSubclassOf<AActor> SkeletonClass;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
-	TSubclassOf<AActor> PotteryClass;
+	TArray<TSubclassOf<AActor>> SpawnableObjects;
 	
 
 	float GridHeight;
