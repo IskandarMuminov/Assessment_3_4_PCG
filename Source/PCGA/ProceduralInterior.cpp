@@ -3,6 +3,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "GameFramework/Actor.h"
 #include "GeometryCollection/GeometryCollectionActor.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values for this component's properties
 UProceduralInterior::UProceduralInterior()
@@ -17,9 +18,12 @@ void UProceduralInterior::BeginPlay()
 {
     Super::BeginPlay();
 
+    if (GetOwner()->HasAuthority()) 
+    {
         SetBoundsToParent();
         CreateGrid();
         PlaceObjectsOnGrid();
+    }
 }
 
 // Dynamically set bounds based on parent actor's size
@@ -168,4 +172,9 @@ bool UProceduralInterior::IsPointBlocked(const FVector& Point)
     }
     
     return false; // Not blocked if we only hit the floor or nothing at all
+}
+
+void UProceduralInterior::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }

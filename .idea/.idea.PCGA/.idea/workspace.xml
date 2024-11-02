@@ -9,20 +9,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c949d30e-2fe8-462a-9467-3dd33a6f0887" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PCGA/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PCGA/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/BPChest.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BPChest.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_Barrel.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_Barrel.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_Pottery.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_Pottery.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/BP_Skelet.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/BP_Skelet.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/Dungeon_Generator1.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Dungeon_Generator1.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/Master_Room.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/Master_Room.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Kobo_Dungeon/Blueprints/BP-Brazier-01.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Kobo_Dungeon/Blueprints/BP-Brazier-01.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/PGInterior.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PGInterior.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Procedural_Dungeon/Dungeon_Room_1.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Procedural_Dungeon/Dungeon_Room_1.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Procedural_Dungeon/Dungeon_Room_2.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Procedural_Dungeon/Dungeon_Room_2.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Procedural_Dungeon/Dungeon_Room_3.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Procedural_Dungeon/Dungeon_Room_3.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Procedural_Dungeon/Dungeon_Room_4.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Procedural_Dungeon/Dungeon_Room_4.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Procedural_Dungeon/Dungeon_Room_5.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Procedural_Dungeon/Dungeon_Room_5.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Procedural_Dungeon/End_Wall.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Procedural_Dungeon/End_Wall.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/PCGA/ProceduralInterior.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/PCGA/ProceduralInterior.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/PCGA/ProceduralInterior.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/PCGA/ProceduralInterior.h" afterDir="false" />
     </list>
@@ -204,7 +191,7 @@
       <option name="presentableId" value="Default" />
       <updated>1730281365657</updated>
       <workItem from="1730281368872" duration="361000" />
-      <workItem from="1730527915948" duration="6560000" />
+      <workItem from="1730527915948" duration="7402000" />
     </task>
     <servers />
   </component>

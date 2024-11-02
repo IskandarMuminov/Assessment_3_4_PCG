@@ -41,7 +41,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
+	UPROPERTY(Replicated,EditAnywhere, BlueprintReadWrite, Category = "Room", meta=(AllowPrivateAccess= "true"))
 	TArray<TSubclassOf<AActor>> SpawnableObjects;
 	
 protected:
@@ -67,5 +67,5 @@ protected:
 	                             float Yaw);
 	FVector GetRandomPointInSquare(const FVector& UpperLeft, const FVector& LowerRight);
 	bool IsPointBlocked(const FVector& Point);
-
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };
