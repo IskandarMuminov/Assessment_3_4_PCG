@@ -66,14 +66,14 @@ void UProceduralInterior::CreateGrid()
             if (X < GridSizeX - 1) // Ensure within bounds
             {
                 FVector NextVertexLocation = FVector(TopLeft.X + (X + 1) * VertexSpacing, TopLeft.Y + Y * VertexSpacing, GridHeight);
-                DrawDebugLine(GetWorld(), VertexLocation, NextVertexLocation, FColor::Blue, true, -1.f, 0, 2.f);
+                //DrawDebugLine(GetWorld(), VertexLocation, NextVertexLocation, FColor::Blue, true, -1.f, 0, 2.f);
             }
 
             // Draw vertical lines
             if (Y < GridSizeY - 1) // Ensure within bounds
             {
                 FVector NextVertexLocation = FVector(TopLeft.X + X * VertexSpacing, TopLeft.Y + (Y + 1) * VertexSpacing, GridHeight);
-                DrawDebugLine(GetWorld(), VertexLocation, NextVertexLocation, FColor::Blue, true, -1.f, 0, 2.f);
+                //DrawDebugLine(GetWorld(), VertexLocation, NextVertexLocation, FColor::Blue, true, -1.f, 0, 2.f);
             }
 
             // Triangles for procedural mesh (for completeness)
@@ -171,7 +171,7 @@ bool UProceduralInterior::IsPointBlocked(const FVector& Point)
         }
     }
     
-    return false; // Not blocked if we only hit the floor or nothing at all
+    return false;
 }
 
 void UProceduralInterior::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
