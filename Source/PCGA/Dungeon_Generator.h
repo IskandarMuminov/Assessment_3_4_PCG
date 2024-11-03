@@ -7,7 +7,6 @@
 #include "Dungeon_Generator.generated.h"
 
 class AMasterRoom;
-class ADoor;
 
 UCLASS()
 class PCGA_API ADungeon_Generator : public AActor
@@ -18,6 +17,21 @@ public:
 	// Sets default values for this actor's properties
 	ADungeon_Generator();
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dungeon")
+	TSubclassOf<AActor> DungeonRoom1Class;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dungeon")
+	TSubclassOf<AActor> DungeonRoom2Class;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dungeon")
+	TSubclassOf<AActor> DungeonRoom3Class;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dungeon")
+	TSubclassOf<AActor> DungeonRoom4Class;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dungeon")
+	TSubclassOf<AActor> DungeonRoom5Class;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -27,8 +41,6 @@ protected:
 	void CheckForOverlaps();
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
-	void SpawnDoorsAtExits();
 
 	
 public:	
@@ -48,8 +60,6 @@ public:
     TObjectPtr<USceneComponent> SelectedExitPoint;
 
     /** List of possible room types that can be spawned in the dungeon */
-    //UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Default")
-    //TArray<UClass*> RoomList;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Default")
 	TArray<UClass*> RoomList;
 
@@ -103,13 +113,6 @@ public:
     /** Random stream object used to generate random values based on the seed */
     UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Default")
     FRandomStream Stream;
-
-	//UFUNCTION(BlueprintCallable, Category = "Dungeon")
-	//void SpawnDoorsAtExits();
-	
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Default")
-	TSubclassOf<ADoor> DoorClass;
-
 
 private:
 	bool DungeonComplete;

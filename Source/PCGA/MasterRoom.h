@@ -6,6 +6,9 @@
 #include "GameFramework/Actor.h"
 #include "MasterRoom.generated.h"
 
+class UStaticMeshComponent;
+class USceneComponent;
+
 UCLASS()
 class PCGA_API AMasterRoom : public AActor
 {
@@ -27,8 +30,19 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Components for the room
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Room")
+	UStaticMeshComponent* RoomMesh;
+
+	// Array of exit points, which can be scene components
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Room")
+	TArray<USceneComponent*> ExitPoints;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable, Category = "Room")
+	void AddExit(USceneComponent* ExitPoint);
 
 };

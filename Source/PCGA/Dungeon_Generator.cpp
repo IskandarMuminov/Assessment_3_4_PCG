@@ -6,25 +6,52 @@
 #include "Components/SceneComponent.h"
 #include "Engine/World.h"
 #include "TimerManager.h"
-#include "Door.h" 
+#include "UObject/ConstructorHelpers.h" 
 
 // Sets default values
 ADungeon_Generator::ADungeon_Generator()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Set the root component of the actor
 	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
 	RootComponent = DefaultSceneRoot;
 
-	// Initialize default values
+	// Initialise default values
 	RoomAmount = 30;
 	DungeonComplete = false;
 	MaxDungeonTime = 60.0;
 	Seed = -1;
 
-	SpawnDoorsAtExits();
+	static ConstructorHelpers::FClassFinder<AMasterRoom> Room1(TEXT("/Game/Path/To/Dungeon_Room_1"));
+	if (Room1.Succeeded())
+	{
+		RoomList.Add(Room1.Class);
+	}
+
+	static ConstructorHelpers::FClassFinder<AMasterRoom> Room2(TEXT("/Game/Path/To/Dungeon_Room_2"));
+	if (Room2.Succeeded())
+	{
+		RoomList.Add(Room2.Class);
+	}
+
+	static ConstructorHelpers::FClassFinder<AMasterRoom> Room3(TEXT("/Game/Path/To/Dungeon_Room_3"));
+	if (Room3.Succeeded())
+	{
+		RoomList.Add(Room3.Class);
+	}
+
+	static ConstructorHelpers::FClassFinder<AMasterRoom> Room4(TEXT("/Game/Path/To/Dungeon_Room_4"));
+	if (Room4.Succeeded())
+	{
+		RoomList.Add(Room4.Class);
+	}
+
+	static ConstructorHelpers::FClassFinder<AMasterRoom> Room5(TEXT("/Game/Path/To/Dungeon_Room_5"));
+	if (Room5.Succeeded())
+	{
+		RoomList.Add(Room5.Class);
+	}
 
 }
 
@@ -33,18 +60,15 @@ void ADungeon_Generator::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Initialize the random stream using the seed
 	Stream.Initialize(Seed);
 
 	GenerateDungeon();
 	
-	// Start the dungeon generation process
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ADungeon_Generator::GenerateDungeon, 1.0f, true);
 }
 
 void ADungeon_Generator::GenerateDungeon()
 {
-	// Check if the dungeon is already complete
 	if (DungeonComplete || RoomAmount <= 0)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
@@ -75,14 +99,12 @@ void ADungeon_Generator::GenerateDungeon()
 				RoomAmount--;
 
 				// Update ExitsList and set a new SelectedExitPoint
-				ExitsList = LatestRoom->GetExits(); // Assuming `GetExits()` returns an array of exits
+				ExitsList = LatestRoom->GetExits();
 				if (ExitsList.Num() > 0)
 				{
 					int32 ExitIndex = Stream.RandRange(0, ExitsList.Num() - 1);
 					SelectedExitPoint = ExitsList[ExitIndex];
 				}
-
-				// Optionally handle overlaps
 				CheckForOverlaps();
 			}
 		}
@@ -91,8 +113,7 @@ void ADungeon_Generator::GenerateDungeon()
 
 void ADungeon_Generator::CheckForOverlaps()
 {
-	// Assuming LatestRoom has a function to get overlapped components
-	//OverlappedList = LatestRoom->GetOverlappedComponents();
+	OverlappedList = LatestRoom->GetOverlappedComponents();
 
 	if (LatestRoom)
 	{
@@ -106,8 +127,6 @@ void ADungeon_Generator::CheckForOverlaps()
 			{
 				if (OverlappedComponent)
 				{
-					// Here you can handle what happens during an overlap.
-					// For example, you could log the overlap or destroy the room.
 					UE_LOG(LogTemp, Warning, TEXT("Overlap detected with: %s"), *OverlappedComponent->GetName());
 
 					// Destroy the latest room if overlapping too much
@@ -164,32 +183,6 @@ void ADungeon_Generator::CheckForOverlaps()
 		//}
 	//}
 //}
-
-void ADungeon_Generator::SpawnDoorsAtExits()
-{
-	if (DoorClass && LatestRoom)
-	{
-		for (USceneComponent* ExitComponent : LatestRoom->GetExits())
-		{
-			if (ExitComponent)
-			{
-				FTransform SpawnTransform = ExitComponent->GetComponentTransform();
-				FActorSpawnParameters SpawnParams;
-				SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-				// Spawn the door
-			//	ADoor* SpawnedDoor = GetWorld()->SpawnActor<ADoor>(DoorClass, SpawnTransform, SpawnParams);
-
-				// Optionally log the spawn position for debugging
-				UE_LOG(LogTemp, Warning, TEXT("Spawned door at: %s"), *SpawnTransform.GetLocation().ToString());
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("ExitComponent is null!"));
-			}
-		}
-	}
-}
 
 // Called every frame
 void ADungeon_Generator::Tick(float DeltaTime)
