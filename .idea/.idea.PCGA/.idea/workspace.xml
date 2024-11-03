@@ -9,7 +9,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c949d30e-2fe8-462a-9467-3dd33a6f0887" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PCGA/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PCGA/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Materials/PostProcessing.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Materials/PostProcessing.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/PGInterior.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/PGInterior.umap" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,9 +45,9 @@
   },
   "keyToStringList": {
     "rider.external.source.directories": [
-      "C:\\Users\\User\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
-      "C:\\Users\\User\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
-      "C:\\Users\\User\\AppData\\Local\\Symbols\\src"
+      "C:\\Users\\freds\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
+      "C:\\Users\\freds\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
+      "C:\\Users\\freds\\AppData\\Local\\Symbols\\src"
     ]
   }
 }]]></component>
@@ -192,6 +191,7 @@
       <workItem from="1730281368872" duration="361000" />
       <workItem from="1730527915948" duration="8401000" />
       <workItem from="1730628448247" duration="1670000" />
+      <workItem from="1730632170499" duration="952000" />
     </task>
     <servers />
   </component>
